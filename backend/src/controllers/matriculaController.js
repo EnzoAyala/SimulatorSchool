@@ -1,6 +1,7 @@
 const db = require('../config/db');
 const bcrypt = require('bcryptjs');
 const { generarCodigoInstitucional } = require('../utils/codeGenerator');
+const { enviarCorreoCrendenciales } = require('../utils/emailService');
 
 exports.registrarUsuario = async (req, res) => {
     // 1. Desestructurar los datos que vienen del cliente 9Angular)
@@ -57,10 +58,10 @@ exports.registrarUsuario = async (req, res) => {
         //  Si todo salio bien, consolidar cambios en la BD
         await connection.commit();
 
-        // aquí se llamaría al servicio de NodeMailer 
-        // para disparar el correo electrónico con las 
-        // credenciales en segundo plano.
+        // Disparar el envio de correo Automatico (En segundo plano)
+        enviarCorreoCrendenciales(correo, `${nombre} ${apellido}`, condigoInst, passwordTemporal);
 
+        // Respuesta oficial HTTP al frontend
         res.status(201).json({
             status: "success",
             message: "Usuario matriculado y registrado exitosamente en el sistema",
