@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const db = require('./config/db'); // Importamos nuestro pool de base de datos
+const matriculaRouters = require('./routes/matriculaRoutes')
 
 require('dotenv').config();
 
@@ -10,6 +11,7 @@ const PORT = process.env.PORT || 3000;
 // Middlewares Globales
 app.use(cors());
 app.use(express.json()); // Permite al servidor entender formatos JSON en las peticiones
+app.use('/api/matriculas', matriculaRouters);
 
 // Ruta de prueba de salud de la API (Healt Cheack)
 app.get('/api/status', async (req, res) => {
